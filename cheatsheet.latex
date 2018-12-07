@@ -1,0 +1,216 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{stmaryrd}
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+ 
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}:\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}:\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{definition}[2][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}:\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+ 
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+%\renewcommand{\qedsymbol}{\filledbox}
+ 
+\title{Overview Modal Logic}%replace X with the appropriate number
+
+%\maketitle
+ 
+\begin{definition}{Maximal consistent set}
+Let $L$ be a logic. Then $M$ is a maximal consistent with respect to $L$ if for any $L$-consistent set $N$, $N \subseteq M \Rightarrow N = M$. A set $M$ is $L$-consistent if \emph{not} $\vdash_L \phi_1 \wedge \dots \wedge \phi_n \rightarrow \bot$ for $\phi_1 \dots \phi_n \in M$.
+\end{definition}
+
+\begin{definition}{General frame}
+A regular frame is a triple $(W, R, \mathcal{A})$, with $W$ a set, $R \subseteq A \times A$ and $\mathcal{A}: \text{Prop} \rightarrow \mathcal{P}(W)$ with $\mathcal{A}(p)$ non-empty, closed under unions and complements in $W$, $\Diamond U \in \mathcal{A}(p), \forall U \in \mathcal{A}(p)$, where $\Diamond U := \{ w \in W | \exists v \in U : (w, v) \in R \}$.
+\end{definition}
+
+\begin{definition}{Normal Modal Logic}
+A normal modal logic $L$ contains all classical tautologies, the K-axiom ($\square (p \rightarrow q) \rightarrow (\square p \rightarrow \square q)$) and is closed under modus ponens (MP), uniform substitution (US) and necessitation (N): if $\phi \in L$, then $\square \phi \in L$.
+\end{definition}
+
+\begin{definition}{Propositional Dynamic Logic (PDL)}
+A propositional dynamic logic is a logic which has infinitely many modal operators $\left( \langle \pi \rangle \right)_{\pi \in \Pi}$ where $\Pi$ is an algebra with  composition ($\pi_1; \pi_2$), choice ($\pi_1 \cup \pi_2$) and repetition ($\pi^*$) operators. A \emph{normal} propositional $L$ is closed under necessitation ($\phi \in L$ implies $[\pi] \phi \in L$ for any $\pi$), modus ponens, and uniform subsitution. Further, it contains the following axioms:
+\begin{enumerate}
+\item $[\pi](p \rightarrow q) \rightarrow ([\pi]p \rightarrow [\pi]q)$,
+\item $\langle \pi \rangle p \leftrightarrow \lnot [\pi] \lnot p$,
+\item $\langle \pi_1; \pi_2 \rangle p \leftrightarrow \langle \pi_1 \rangle \langle \pi_2 \rangle p$,
+\item $\langle \pi_1 \cup \pi_2 \rangle p \leftrightarrow \langle \pi_1 \rangle p \vee \langle \pi_2 \rangle p$,
+\item $\langle \pi^* \rangle p \leftrightarrow (p \vee \langle \pi \rangle \langle \pi^* \rangle p)$,
+\item $[\pi^*](p \rightarrow [\pi]p) \rightarrow (p \rightarrow [\pi^*]p)$.
+\end{enumerate}
+$\mathbf{PDL}$ is the smallest normal propositional dynamic logic.
+\end{definition}
+
+\begin{definition}{Regular frame}
+A regular frame is a tuple $(W, \left(R_\pi\right)_{\pi \in \Pi})$  for which $R_{\pi_1;\pi_2} = R_{\pi_1} \circ R_{\pi_2}$, $R_{\pi_1 \cup \pi_2} = R_{\pi_1} \cup R_{\pi_2}$ and $R_{\pi^*} = (R_\pi)^*$, where $(\cdotp)^*$ is the transitive-reflexive closure of relations.
+\end{definition}
+
+\begin{definition}{Completeness}
+A logic $L$ is complete with respect to some class of frames $\mathcal{C}$ if $$\forall \mathbb{F} \in \mathcal{C}: \mathbb{F} \models \phi \Rightarrow \vdash_L \phi$$ for all formulas $\phi$.
+\end{definition}
+
+\begin{definition}{Soundness}
+A logic $L$ is sound with respect to some class of frames $\mathcal{C}$ if $$\vdash_L \phi \Rightarrow \forall \mathbb{F} \in \mathcal{C}: \mathbb{F} \models \phi$$ for all formulas $\phi$.
+\end{definition}
+
+\begin{definition}{Filtration}
+A filtration of a Kripke model $\mathbb{M} = (W, R, V)$ with respect to set of formulas $\Sigma$ is another Kripke model $(W^\Sigma, R^f, V^\Sigma)$, where $W^\Sigma := W / \sim_\Sigma$, with $w \sim_\Sigma v$ whenever $\forall \phi \in \Sigma: \mathbb{M}, w \models \phi \text{ iff } \mathbb{M}, v \models \phi$, $V^\Sigma (p) := \{ [w] \, | \, w \in V(P) \}$ and the following conditions hold on $R^f$: $(w, v) \in R \Rightarrow ([w], [v]) \in R^f$ and $([w], [v]) \in R^f \Rightarrow \forall \Diamond \phi \in \Sigma : \mathbb{M}, v \models \phi \Rightarrow \mathbb{M}, w \models \Diamond \phi$.
+\end{definition}
+
+\begin{definition}{Standard translation}
+\end{definition}
+
+\begin{definition}{Neighbourhood frame}
+A neighbourhood frame (NBD-frame) is a tuple $(W, N)$ where $W$ is a set and $N : W \rightarrow \mathcal{P}(\mathcal{P}(W))$.
+\end{definition}
+
+\begin{definition}{Neighbourhood semantics}
+A neighbourhood model is a tuple $(\mathbb{F}, V)$ where $\mathbb{F} = (W, N)$ is an NBD-frame and $V: W \rightarrow \mathcal{P}(W)$ a valuation. The model satisfies $\phi$ at $w$ iff $\llbracket \phi \rrbracket \in N(w)$, where $\llbracket \phi \rrbracket := \{ w \in W \, | \, \mathbb{F}, w \models \phi \}$. Semantics for formulas of other forms are identical to Kripke semantics.
+\end{definition}
+
+\begin{definition}{Fischer-Ladner closure}
+The Fischer-Ladner closure of a set of formulas $\Sigma$, $\lnot \text{FL}(\Sigma)$, is the smallest set that contains $\Sigma$ and is closed under subformulas, single negations and the following operations: if $\langle \pi^* \rangle \phi \in \lnot \text{FL}(\Sigma)$, then $\langle \pi \rangle \langle \pi^* \rangle \phi \in \lnot \text{FL}(\Sigma)$. If $\langle \pi_1 ; \pi_2 \rangle \phi \in \lnot \text{FL}(\Sigma)$, then $\langle \pi_1 \rangle \langle \pi_2 \rangle \phi \in \lnot \text{FL}(\Sigma)$. And if $\langle \pi_1 \cup \pi_2 \rangle \phi \in \lnot \text{FL}(\Sigma)$, then $\langle \pi_1 \rangle \in \lnot \text{FL}(\Sigma)$ or $\langle \pi_2 \rangle \in \lnot \text{FL}(\Sigma)$.
+\end{definition}
+
+\begin{definition}{Atom}
+A $\Sigma$-atom is a set of formulas which is maximally consistent in $\lnot \text{FL}(\Sigma)$. The set of all $\Sigma$-atoms is denoted by $\text{At}(\Sigma)$.
+\end{definition}
+
+\begin{definition}{Canonical model}
+The canonical model of a logic $L$ is a Kripke model $(W^C, R^C, V^C)$, where $W^C$ is the set of $L$-maximal sets, $R^C := \{ (\Gamma, \Delta) \, | \, \forall \phi : \square \phi \in \Gamma \Rightarrow \phi \in \Delta \}$ and $V^C(p) := \{ \Delta \in W^C \, | \, p \in \Delta \}$.
+\end{definition}
+
+\begin{definition}{Canonicity}
+A formula $\phi$ is canonical if for any normal modal logic $L$, $\phi \in L$ implies that $\phi$ is valid on the canonical model of $L$. A normal logic $L$ is canonical if the canonical frame is a frame for $L$ (all $L$-theorems are validated on its canonical model). 
+\end{definition}
+
+\begin{definition}{Kripke completeness}
+\end{definition}
+
+\begin{definition}{Log and Fr}
+For a class of frames $\mathcal{C}$, we define the logic $\text{Log}(\mathcal{C}) := \{ \phi \, | \, \forall \mathbb{F} \in \mathcal{C} : \mathbb{F} \models \phi \}$. For a logic $L$, we defines its class of frames by $\text{Fr}(L) := \{ \mathbb{F} \, | \, \forall \phi \in L : \mathbb{F} \models \phi \}$.
+\end{definition}
+
+\begin{definition}{Finite model property}
+A normal modal logic $L$ is said to have the finite model property if $L = \text{Log}(\mathcal{C})$ for some finite class of frames $\mathcal{C}$.
+\end{definition}
+
+\begin{definition}{Local (first order) correspondent}
+TODO
+\end{definition}
+ 
+\begin{theorem}{Sahlqvist completeness}
+For any set of Sahlqvist formulas $\Sigma$, the logic $\mathbf{K\Sigma}$ is complete with respect to the class of frames defined by the first-order correspondents of $\Sigma$.
+\end{theorem}
+ 
+\begin{theorem}{van Benthem's characterization}
+A first order formula $\alpha(x)$ is invariant under bisimulations iff it is equivalent to the standard translation of a modal formula.
+\end{theorem}
+ 
+\begin{theorem}{}
+Logic $\mathbf{K}$ is sound and complete with respect to Kripke frames.
+\end{theorem}
+ 
+\begin{theorem}{}
+PDL is sound and complete with respect to regular frames.
+\end{theorem}
+
+\begin{theorem}{Logic decidability}
+Let $L$ be a finitely axiomatizable normal logic. If $L$ has the finite model property, it is decidable. (CHECK THIS)
+\end{theorem}
+ 
+\begin{lemma}{Lindenberg}
+For any $L$-consistent set $M$, there exists a $L$-maximal consistent set $\Gamma$ with $M \subseteq \Gamma$.
+\end{lemma}
+
+\begin{lemma}{Finite filtrations}
+The filtration of any model with respect to a finite set of formulas is finite.
+\end{lemma}
+
+\begin{lemma}{Atoms are projections of maximal consistent sets}
+For any set of formulas $\Sigma$, $\text{At}(\Sigma) = \{ \Gamma \cap \lnot \text{FL}(\Sigma) \, | \, \Gamma \text{ is an MCS} \}$.
+\end{lemma}
+
+\begin{lemma}{}
+For any \emph{finite} set of formulas $\Sigma$, $\lnot \text{FL}(\Sigma)$ is also finite.
+\end{lemma}
+
+\begin{lemma}{}
+Every formula is that is satisfiable is also satisfiable on a finite tree.
+\end{lemma}
+
+\begin{lemma}{MCS properties}
+Let $L$ be a consistent normal modal logic and $\Gamma$ a $L$-MCS. Then
+\begin{enumerate}
+    \item if $\phi \rightarrow \psi \in \Gamma$ and $\phi \in \Gamma$, then $\psi \in \Gamma$,
+    \item $L \subseteq \Gamma$,
+    \item for all formulas $\phi$, either $\phi \in \Gamma$ or $\lnot \phi \in \Gamma$,
+    \item $\phi \wedge \psi \in \Gamma$ iff $\phi \in \Gamma$ and $\psi \in \Gamma$,
+    \item $\phi \vee \psi \in \Gamma$ iff $\phi \in \Gamma$ or $\psi \in \Gamma$.
+\end{enumerate}
+\end{lemma}
+ 
+\begin{proposition}{}
+Every model is the bounded morphic image of a forest.
+\end{proposition}
+
+\begin{proposition}{}
+A Kripke frame $\mathbb{F}$ validates L\"{o}b's formula $\square (\square p \rightarrow p) \rightarrow \square p$ iff $\mathbb{F}$ is transitive and converse well-founded. 
+\end{proposition}
+
+\begin{proposition}{Equivalent replacement}
+Let $\phi[\psi]$ be a formula that contains $\psi$ as a subformula. Let $\phi[\chi]$ denote the formula where $\psi$ is replaced by $\chi$ in $\phi$. Then for any normal logic $L$ (and possibly even more logics), 
+$$
+\vdash_L \psi \leftrightarrow \chi \implies \, \vdash_L \phi[\psi] \leftrightarrow \phi[\chi].
+$$
+\end{proposition}
+
+\begin{proposition}{}
+Logic $\mathbf{K_tThoM}$ is a consistent normal modal logic which has no Kripke frames.
+\end{proposition}
+
+\begin{proposition}{}
+Every normal modal logic is sound and complete with respect to some class of general frames.
+\end{proposition}
+
+% \begin{proof}
+% Blah, blah, blah.  Here is an example of the \texttt{align} environment:
+% %Note 1: The * tells LaTeX not to number the lines.  If you remove the *, be sure to remove it below, too.
+% %Note 2: Inside the align environment, you do not want to use $-signs.  The reason for this is that this is already a math environment. This is why we have to include \text{} around any text inside the align environment.
+% \begin{align*}
+% \sum_{i=1}^{k+1}i & = \left(\sum_{i=1}^{k}i\right) +(k+1)\\ 
+% & = \frac{k(k+1)}{2}+k+1 & (\text{by inductive hypothesis})\\
+% & = \frac{k(k+1)+2(k+1)}{2}\\
+% & = \frac{(k+1)(k+2)}{2}\\
+% & = \frac{(k+1)((k+1)+1)}{2}.
+% \end{align*}
+% \end{proof}
+ 
+% --------------------------------------------------------------
+%     You don't have to mess with anything below this line.
+% --------------------------------------------------------------
+ 
+\end{document}
